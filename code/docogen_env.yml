@@ -1,0 +1,39 @@
+name: docogen_env
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - cudatoolkit
+  - pip
+  - pytorch=1.7.1=py3.8_cuda11.0.221_cudnn8.0.5_0
+  - torchaudio
+  - torchtext=0.8.1=py38
+  - torchvision
+  - numpy
+  - pip:
+    - comet-ml
+    - datasets
+    - huggingface-hub
+    - matplotlib
+    - multiprocess
+    - pandas
+    - pytorch-lightning==1.2.1
+    - scikit-learn
+    - scipy
+    - seaborn
+    - transformers==4.11.3
+    - sentence-transformers
+    - mlflow
+    - gensim
+    - tdqm
+    - spacy
+    - nltk
+    - jupyter
+    - notebook
+    - ipython
+    - statsmodels
+    - xgboost
+    - wheel
+    - tensorboard
+    - sortedcontainers
+prefix: $HOME/anaconda3/envs/docogen_env
