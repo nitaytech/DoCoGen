@@ -233,21 +233,25 @@ ______________________________________________________________________
 <a name="docogen_citation"/>
 
 ```
-@article{DBLP:journals/corr/abs-2202-12350,
+@inproceedings{DBLP:conf/acl/CalderonBFR22,
   author    = {Nitay Calderon and
                Eyal Ben{-}David and
                Amir Feder and
                Roi Reichart},
+  editor    = {Smaranda Muresan and
+               Preslav Nakov and
+               Aline Villavicencio},
   title     = {DoCoGen: Domain Counterfactual Generation for Low Resource Domain
                Adaptation},
-  journal   = {CoRR},
-  volume    = {abs/2202.12350},
+  booktitle = {Proceedings of the 60th Annual Meeting of the Association for Computational
+               Linguistics (Volume 1: Long Papers), {ACL} 2022, Dublin, Ireland,
+               May 22-27, 2022},
+  pages     = {7727--7746},
+  publisher = {Association for Computational Linguistics},
   year      = {2022},
-  url       = {https://arxiv.org/abs/2202.12350},
-  eprinttype = {arXiv},
-  eprint    = {2202.12350},
-  timestamp = {Wed, 02 Mar 2022 16:35:04 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2202-12350.bib},
+  url       = {https://aclanthology.org/2022.acl-long.533},
+  timestamp = {Wed, 18 May 2022 15:21:43 +0200},
+  biburl    = {https://dblp.org/rec/conf/acl/CalderonBFR22.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
