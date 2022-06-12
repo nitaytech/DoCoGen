@@ -53,9 +53,9 @@ class Configs:
                  save_to_csv_every_n_step: int = 500,
 
                  # generation kwargs
-                 num_beams: int = 4,
+                 num_beams: int = 8,
                  num_beam_groups: int = 4,
-                 repetition_penalty: float = 1.5,
+                 repetition_penalty: float = 2.0,
                  length_penalty: float = 1.5,
                  diversity_penalty: float = 0.05,
                  early_stopping: bool = True,
@@ -159,7 +159,7 @@ class Configs:
          num_beams: an int [default: 4]
          num_beam_groups: an int [default: 4]
          repetition_penalty: a float [default: 1.5]
-         length_penalty: a float [default: 1.5]
+         length_penalty: a float [default: 2.0]
          diversity_penalty: a float [default: 0.05]
          early_stopping: a bool [default: True]
          num_return_sequences: an int [default: 1]
@@ -243,7 +243,7 @@ class Configs:
         self.concepts_to_control = [concept_to_control]
         self.encoder_model_name = t5_model_name
         self.precision = PRECISION
-        self.fast_dev_run = fast_dev
+        self.fast_dev_run = False
         self.text_processor = TextProcessor(**self.kwargs_for_class(TextProcessor))
 
         self._init_paths(project_dir,
@@ -373,4 +373,4 @@ class Configs:
                                            generator_classifier_epochs=1,
                                            num_workers=1,
                                            fast_dev=True,
-                                           fast_dev_run=True)
+                                           fast_dev_run=False)

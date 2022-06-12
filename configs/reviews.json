@@ -8,18 +8,19 @@
 "t5_model_name": "t5-base",
 "max_seq_len": 96,
 "seed": 42,
-"batch_size": 48,
+"batch_size": 24,
 "min_occurrences": 10,
 "smoothing": [1, 5, 7],
 "n_orientations": 4,
 "top_occurrences_threshold": 100,
 "n_grams": 3,
-"masked_output": true,
+"masked_output": false,
 "threshold": 0.08,
 "top_n": 0.05,
 "noise": 0.05,
 "unknown_orientation_p": 0.05,
 "generator_epochs": 5,
 "generator_classifier_epochs": 3,
-"generator_classifier_batch_size": 64
+"generator_classifier_batch_size": 64,
+"fast_dev": false
 }

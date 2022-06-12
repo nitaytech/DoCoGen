@@ -228,7 +228,7 @@ class ControllableT5(Module, ModuleUtilsMixin, GenerationMixin):
                              max_length=kwargs.pop('max_length', self.configs.max_seq_len),
                              num_beams=kwargs.pop('num_beams', 4),
                              num_beam_groups=kwargs.pop('num_beam_groups', 4),
-                             repetition_penalty=kwargs.pop('repetition_penalty', 1.5),
+                             repetition_penalty=kwargs.pop('repetition_penalty', 2.0),
                              length_penalty=kwargs.pop('length_penalty', 1.5),
                              early_stopping=kwargs.pop('early_stopping', True),
                              diversity_penalty=kwargs.pop('diversity_penalty', 0.05),
@@ -678,7 +678,7 @@ class LightningControllableT5(LightningModule):
             generated_text = self.model.language_masker.combine_input_output(masked_text, generated_text)
         else:
             generated_text = self.model.decode_texts(generated_input_ids)
-        generated_text = [self.processor.clean_spaces(t) for t in generated_text]
+        generated_text = [self.model.processor.clean_spaces(t) for t in generated_text]
         eval_dict = self._init_loss_dict(eval_mode=True, batch_size=len(example_id), return_keys=False)
         eval_dict['example_id'] = example_id
         eval_dict['text'] = input_text

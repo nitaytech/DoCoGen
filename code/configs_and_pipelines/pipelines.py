@@ -106,7 +106,7 @@ def build_datasets(configs: Configs, *,
     # splitting the training dataset to train, validation and test
     training_dataset = {c: training_dataset[c] for c in training_dataset.column_names}
     train_size = len(training_dataset['split'])
-    val_size = max(round_power_two(int(train_size ** 0.5)), configs.batch_size * 2)
+    val_size = min(max(round_power_two(int(train_size ** 0.5)), configs.batch_size * 2), int(0.25 * train_size))
     training_indices = list(range(train_size))
     val_indices = language_masker.rnp.choice(training_indices, size=val_size, replace=False)
     for idx in val_indices:

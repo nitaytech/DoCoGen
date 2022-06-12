@@ -1,12 +1,13 @@
 import os
 import argparse
 from configs_and_pipelines.configs_manager import Configs
-from configs_and_pipelines.pipelines import build_datasets, train_models, generate
+from configs_and_pipelines.pipelines import build_datasets, train_models, generate, to_path
 
 
 def build_train_generate(configs_path: str, new_configs_path: str = None):
-    new_configs_path = configs_path if new_configs_path is None else new_configs_path
     configs = Configs.from_json(configs_path)
+    new_configs_path = to_path(configs.project_dir) / 'configs.json' if new_configs_path is None else new_configs_path
+    print("New configs path:", new_configs_path)
     configs = build_datasets(configs=configs,
                              fit_language_masker=True,
                              fast_dev=configs.fast_dev)
@@ -17,7 +18,7 @@ def build_train_generate(configs_path: str, new_configs_path: str = None):
                            fast_dev=configs.fast_dev)
     configs.to_json(new_configs_path)
     generate(configs,
-             splits=['validation'],
+             splits=['train', 'validation'],
              fast_dev=configs.fast_dev)
 
 
