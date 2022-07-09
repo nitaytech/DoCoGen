@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 
-Our code is implemented in [PyTorch](https://pytorch.org/), using the [Transformers](https://github.com/huggingface/transformers) and [PyTorch-Lightning](https://www.pytorchlightning.ai/) libraries. 
+Our code is implemented in [PyTorch](https://pytorch.org/), using the [Transformers 🤗](https://github.com/huggingface/transformers) and [PyTorch-Lightning ⚡](https://www.pytorchlightning.ai/) libraries. 
 
 </div>
 
@@ -31,7 +31,102 @@ Note that we include only the code of the DoCoGen generator, thus you can augmen
 If you wish to fully reproduce the DA results of our paper, including the data splits and the baselines,
 please contact us.
 
+
 ______________________________________________________________________
+
+# DoCoGen Lite - single script version
+<a name="lite"/>
+
+The DoCoGen Lite script is a single script version of the DoCoGen generator.
+It is a more simple and readable code that does not require PyTorch-Lightning.
+Although there are minor differences from the [official code](#paper_code) which was used in the paper,
+these differences are not significant.
+If you have a conda environment with the required packages (nltk, 🤗-transformers, and 🤗-datasets) --
+you can run the script without any additional installation.
+
+## How to Run the Code - TL;DR
+
+```bash
+git clone https://github.com/nitaytech/DoCoGen.git
+cd DoCoGen
+conda env create -f docogen_lite_env.yml
+conda activate docogen_lite_env
+unzip data/paper_data.zip -d data/
+python docogen_lite.py --dataset_file_path data/reviews.json --output_dir path/to/output_dir --domains_to_control airline dvd electronics kitchen
+```
+
+
+## Arguments
+
+```text
+  -h, --help            show this help message and exit
+  --dataset_file_path DATASET_FILE_PATH
+                        (str) Path to the dataset file (.json). Must include
+                        the following fields: "text", "domain"
+  --output_dir OUTPUT_DIR
+                        (str) Path to the output directory where the following
+                        files will be save: (1) preprocessed datasets, (2)
+                        masker, (3) trained domain classifier, (4) trained
+                        DoCoGen (including the training outputs), (5) domain-
+                        counterfactuals.
+  --domains_to_control DOMAINS_TO_CONTROL [DOMAINS_TO_CONTROL ...]
+                        (list of str) List of domains to control (should be
+                        values of the "domain" field).
+  --model_name MODEL_NAME
+                        (str=t5-base) Name of the T5 model to use for the
+                        DoCoGen.
+  --classifier_name CLASSIFIER_NAME
+                        (str=distilroberta-base) Name of the pre-trained model
+                        which will be trained to be a domain classifier. This
+                        model is part of the evaluation step of DoCoGen.
+  --max_length MAX_LENGTH
+                        (int=96) Maximum length of the input and the generated
+                        texts.
+  --eval_size EVAL_SIZE
+                        (int=1024) Size of the evaluation set. Use a small
+                        value, since the evaluation step of DoCoGen includes
+                        generations -- and it is really slow compared to the
+                        training.
+  --labeled_size LABELED_SIZE
+                        (int=16) Size of the labeled dataset which will be
+                        used to generate domain-counterfactuals. Use a small
+                        size or use `None` if you are interested in the whole
+                        dataset.
+  --min_n_occurrences MIN_N_OCCURRENCES
+                        (int=10) An n-gram which occurs less than this value
+                        will have a masking score of zero.
+  --smoothing SMOOTHING [SMOOTHING ...]
+                        (list of ints/floats=[1, 5, 7]) The n-th element is
+                        the smoothing hyperparameter for an n sized n-gram.
+                        These hyperparameters are used to smooth the masking
+                        score (higher values give more weight to the uniform
+                        prior). In addition, the length of the smoothing list
+                        determines the maximum n-gram size.
+  --batch_size_classifier BATCH_SIZE_CLASSIFIER
+                        (int=64) Batch size for the domain classifier.
+  --batch_size_docogen BATCH_SIZE_DOCOGEN
+                        (int=32) Batch size for DoCoGen.
+  --docogen_epochs DOCOGEN_EPOCHS
+                        (int=5) Number of epochs for DoCoGen training.
+  --num_beams NUM_BEAMS
+                        (int=4) Number of beams for DoCoGen generation.
+  --generate_all_orientations GENERATE_ALL_ORIENTATIONS
+                        (bool=False) If `True`, all possible orientations will
+                        be generated for each example. Otherwise, randomly
+                        sample an orientation.
+  --print_generated_texts PRINT_GENERATED_TEXTS
+                        (bool=True) If `True`, the generated texts will be
+                        printed.
+  --seed SEED
+```
+______________________________________________________________________
+
+# Paper's Code (Pytorch Lightning)
+<a name="paper_code"/>
+
+If you wish to reproduce the DoCoGen model from our paper please use this code.
+Otherwise, we recommend you to use the [lite version](#lite) as it is more simple,
+more readable and require fewer installations.
 
 ## How to Run the Code
 
@@ -39,15 +134,28 @@ First, clone this repo to your local machine: <br>
 
 `git clone https://github.com/nitaytech/DoCoGen.git`
 
+### TL;DR
+
+```bash
+git clone https://github.com/nitaytech/DoCoGen.git
+cd DoCoGen
+conda env create -f code/docogen_env.yml
+conda activate docogen_env
+unzip data/paper_data.zip -d data/
+python code/main.py -c code/configs/reviews.json
+```
+
+
 ### Installing The Environment
 
 The code was tested on a Conda environment installed on Ubuntu 18.04.
 Install [Conda](https://docs.conda.io/en/latest/miniconda.html) and then create the environment as follows:
 
-`cd DoCoGen` <br>
-`conda env create -f code/docogen_env.yml` <br>
-`conda activate docogen_env`
-
+```bash
+cd DoCoGen
+conda env create -f code/docogen_env.yml
+conda activate docogen_env
+```
 
 ### Adjusting The Raw Data
 
@@ -99,12 +207,12 @@ The following table lists several important parameters which need to be configur
 For a full description of all possible parameters see the documentations
 at `code/configs_and_pipelines/configs_manager.py`.
 
-| Key                             | Type \[Default\]                                               | Description                                                                                                                                                                                                                                                                                     | 
-|---------------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
-| project_dir                     | a path-like                                                    | a path to the directory of the projec, where all the data and models will be saved.                                                                                                                                                                                                             ||
+| Key                             | Type \[Default\]                                               | Description                                                                                                                                                                                                                                                                                     |
+|---------------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| project_dir                     | a path-like                                                    | a path to the directory of the projec, where all the data and models will be saved.                                                                                                                                                                                                             |
 | raw_data_json_path              | a path-like                                                    | a path to the json file containing the raw dataset.                                                                                                                                                                                                                                             |
-| concept_to_control              | a string                                                       | the column/key you wish to control (concept is also known as attribute in controlable generation, in the DoCoGen paper - the concept is 'domain').                                                                                                                                              ||
-| values_to_control               | a list of strings                                              | Each string is a possible value of the controlled concept. These are the only values you wish to control. For example: \['airline', 'kitchen'\].                                                                                                                                                | ,                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| concept_to_control              | a string                                                       | the column/key you wish to control (concept is also known as attribute in controlable generation, in the DoCoGen paper - the concept is 'domain').                                                                                                                                              |
+| values_to_control               | a list of strings                                              | Each string is a possible value of the controlled concept. These are the only values you wish to control. For example: \['airline', 'kitchen'\].                                                                                                                                                |
 | splits_for_training             | a list or tuple of strings \[('unlabeled',)\]                  | This are the the data splits (as given in the 'split' column) which will be used for training the masker and the generator.                                                                                                                                                                     |
 | splits_for_augmentations        | a list or tuple of strings \[('train', 'validation', 'test')\] | This are the the data splits (as given in the 'split' column) which will be used as inpups, for generating new examples.                                                                                                                                                                        |
 | t5_model_name                   | a string \['t5-base'\]                                         | Possible values: 't5-small', 't5-base', 't5-large'.                                                                                                                                                                                                                                             |
@@ -135,8 +243,11 @@ These files are saved at `configs/`.
 
 After adjusting your raw dataset and preparing the config file, you are ready to run our code:
 
-`conda activate docogen_env` <br>
-`python code/main.py -c path/to/config.json`
+```bash
+conda activate docogen_env
+python code/main.py -c path/to/config.json
+```
+
 
 Running these lines will first build two datasets which will be used for training DoCoGen 
 (using the splits specified in `splits_for_training`) and for generating counterfactuals

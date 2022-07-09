@@ -1,0 +1,22 @@
+name: docogen_lite_env
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - cudatoolkit
+  - pip
+  - pytorch
+  - numpy
+  - pip:
+    - comet-ml
+    - datasets
+    - pandas
+    - transformers
+    - tdqm
+    - nltk
+    - jupyter
+    - notebook
+    - ipython
+    - tensorboard
+    - wandb
+prefix: $HOME/anaconda3/envs/docogen_lite_env
