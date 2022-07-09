@@ -459,7 +459,8 @@ def train_docogen(output_dir: str,
     def compute_accuracy_for_docogen(eval_pred):
         generation_ids, labels = eval_pred
         labels = labels[:, 0]
-        generations = tokenizer.batch_decode(generation_ids, skip_special_tokens=True)
+        generations = tokenizer.batch_decode(generation_ids,
+                                             skip_special_tokens=True, clean_up_tokenization_spaces=True)
         predictions = np.array([int(classification_pipeline(gen)[0]['label'].split('_')[-1]) for gen in generations])
         dlabels = [masker.domains[label] for label in labels]
         dpredictions = [masker.domains[pred] for pred in predictions]
@@ -521,7 +522,7 @@ def generate(masker: Masker,
     # the output depends on the HF's version
     if 'generated_token_ids' in generated_output:
         generated_text = masker.tokenizer.batch_decode(generated_output['generated_token_ids'],
-                                                       skip_special_tokens=True)
+                                                       skip_special_tokens=True, clean_up_tokenization_spaces=True)
     else:
         generated_text = generated_output['generated_text']
     return generated_text
