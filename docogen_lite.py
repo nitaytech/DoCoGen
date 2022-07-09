@@ -419,7 +419,8 @@ def train_domain_classifier(output_dir: str,
                                       learning_rate=5e-5,
                                       weight_decay=1e-5,
                                       adam_epsilon=1e-8,
-                                      label_smoothing_factor=0.2)
+                                      label_smoothing_factor=0.2,
+                                      report_to='none')
     trainer = Trainer(model=classifier,
                       args=training_args,
                       train_dataset=train_dataset_for_classifier,
@@ -492,7 +493,8 @@ def train_docogen(output_dir: str,
                                              adam_epsilon=1e-8,
                                              predict_with_generate=True,
                                              generation_max_length=max_length,
-                                             generation_num_beams=num_beams)
+                                             generation_num_beams=num_beams,
+                                             report_to='none')
     trainer = Seq2SeqTrainer(model=docogen,
                              args=training_args,
                              train_dataset=train_dataset_for_docogen,

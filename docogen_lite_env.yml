@@ -3,12 +3,13 @@ channels:
   - pytorch
   - defaults
 dependencies:
+  - python=3.9
   - cudatoolkit
   - pip
   - pytorch
   - numpy
   - pip:
-    - comet-ml
+    - scikit-learn
     - datasets
     - pandas
     - transformers
@@ -17,6 +18,4 @@ dependencies:
     - jupyter
     - notebook
     - ipython
-    - tensorboard
-    - wandb
 prefix: $HOME/anaconda3/envs/docogen_lite_env
